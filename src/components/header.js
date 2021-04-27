@@ -3,10 +3,12 @@ import FirebaseContext from './../context/firebase';
 import UserContext from './../context/user';
 import * as ROUTES from '../constants/routes';
 import { Link } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 
 export default function Header() {
     const { firebase } = useContext(FirebaseContext);
     const { user } = useContext(UserContext);
+    const history = useHistory();
 
     console.log("user", user);
 
