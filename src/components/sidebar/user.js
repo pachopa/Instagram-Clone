@@ -29,5 +29,3 @@ User.propTypes = {
     username: propTypes.string.isRequired,
     fullName: propTypes.string.isRequired
 };
-
-User.whyDidYouRender = true;
