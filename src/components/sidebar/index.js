@@ -4,9 +4,11 @@ import Suggestions from './suggestions';
 
 export default function Index() {
 
+    const test = useUser();
+    // console.log("test", test);
     const { user: { fullName, username, userId } } = useUser();
 
-    console.log("fullName, username, userId", fullName, username, userId);
+    // console.log("fullName, username, userId", fullName, username, userId);
     return (
         <div className="p-4">
             <User username={username} fullName={fullName} />
