@@ -2,23 +2,22 @@ import { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import Skeleton from 'react-loading-skeleton';
 import { getSuggestedProfiles } from '../../services/firebase';
-
-
-
-export default function Suggestions({ userId, following }) {
+import SuggestedProfile from './suggested-profile';
+export default function Suggestions({ userId, following, loggedInUserDocId }) {
     const [profiles, setProfiles] = useState(null);
 
     useEffect(() => {
         async function suggestedProfiles() {
+
             const response = await getSuggestedProfiles(userId, following);
+            console.log("response", response);
+
             setProfiles(response);
         }
         console.log("userId", userId);
         if (userId) {
             suggestedProfiles();
-
         }
-        // console.log("profiles here you are", profiles);
 
     }, [userId]);
 
@@ -30,15 +29,16 @@ export default function Suggestions({ userId, following }) {
                     <p className='font-bold text-gray-base'>Suggestions for you</p>
                 </div>
                 <div className="mt-4 grid gap-5">
-                    {profiles.map((profile) => {
-                        <SuggestedProfiles
+                    {profiles.map((profile) => (
+                        <SuggestedProfile
                             key={profile.docId}
-                            userDocId={profile.docId}
+                            profileDocId={profile.docId}
                             username={profile.username}
                             profileId={profile.userId}
                             userId={userId}
-                        />;
-                    })}
+                            loggedInUserDocId={loggedInUserDocId}
+                        />
+                    ))}
                 </div>
             </div>
         ) : null;
@@ -46,5 +46,6 @@ export default function Suggestions({ userId, following }) {
 
 Suggestions.propTypes = {
     userId: PropTypes.string,
-    following: PropTypes.array
+    following: PropTypes.array,
+    loggedInUserDocId: PropTypes.string
 };

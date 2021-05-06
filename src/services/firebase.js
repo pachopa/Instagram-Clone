@@ -37,9 +37,32 @@ export async function getSuggestedProfiles(userId, following) {
     // const [{ following}]
     return result.docs.map((user) => ({
         ...user.data(), docId: user.id
-    })).filter((profile) => {
-        console.log("profile234234", profile.userId !== userId && !following.includes(profile.userId));
-        return profile.userId !== userId && !following.includes(profile.userId);
-    });
+    })).filter((profile) => profile.userId !== userId && !following.includes(profile.userId)
+    );
 
 }
+
+export async function updateLoggedInUserFollowing(loggedInUserDocId, profileId, isFollowingProfile = false) {
+    return firebase
+        .firestore()
+        .collection('users')
+        .doc(loggedInUserDocId)
+        .update({
+            following: isFollowingProfile ? FieldValue.arrayRemove(profileId) : FieldValue.arrayUnion(profileId)
+        });
+}
+
+export async function updateFollowedUserFollowers(profileDocId, loggedInUserDocId, isFollowingProfile = false) {
+    return firebase
+        .firestore()
+        .collection('users')
+        .doc(profileDocId)
+        .update({
+            followers: isFollowingProfile ? FieldValue.arrayRemove(loggedInUserDocId) : FieldValue.arrayUnion(loggedInUserDocId)
+        });
+}
+
+
+// await updateLoggedInUserFollowing(loggedInUserDocId, profileId);
+// await updateFollowedUserFollowers(spDocId, userId);
+
