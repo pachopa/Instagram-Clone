@@ -4,6 +4,7 @@ import Header from './Header';
 import Image from './image';
 import Actions from './actions';
 import Footer from './footer';
+import Comments from './comments';
 
 
 export default function Post({ content }) {
@@ -24,6 +25,11 @@ export default function Post({ content }) {
                 handleFocus={handleFocus}
             />
             <Footer caption={content.caption} username={content.username} />
+            <Comments
+                docId={content.docId}
+                comments={content.comments}
+                posted={content.dateCreated}
+                commentInput={commentInput} />
         </div>
     );
 };
