@@ -22,7 +22,7 @@ export async function getUserByUsername(username) {
         docId: item.id
     }));
 
-    return user.length > 0 ? user : false;
+    return user;
 }
 
 export async function getUserByUserId(userId) {
@@ -107,4 +107,36 @@ export async function getPhotos(userId, following) {
     );
 
     return photosWithUserDetails;
+}
+
+export async function getUserPhotosByUsername(username) {
+    const [user] = await getUserByUsername(username);
+    const result = await firebase
+        .firestore()
+        .collection('photos')
+        .where('userId', '==', user.userId).get();
+
+    const photos = result.docs.map((item) => ({
+        ...item.data(),
+        docId: item.id
+    }));
+
+    return photos;
+}
+
+export async function isUserFollowingProfile(loggedInUserUsername, profileUserId) {
+    const result = await firebase
+        .firestore()
+        .collection('users')
+        .where('username', '==', loggedInUserUsername)
+        .where('following', 'array-contains', profileUserId)
+        .get();
+
+    const [response = {}] = result.docs.map((item) => ({
+        ...item.data(),
+        docId: item.id
+    }));
+
+    console.log("response", response);
+    return response.userId;
 }
