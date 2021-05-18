@@ -2,15 +2,14 @@ import { useContext } from 'react';
 import FirebaseContext from './../context/firebase';
 import UserContext from './../context/user';
 import * as ROUTES from '../constants/routes';
-import { Link } from 'react-router-dom';
-import { useHistory } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
+import useUser from '../hooks/use-user';
 
 export default function Header() {
     const { firebase } = useContext(FirebaseContext);
-    const { user } = useContext(UserContext);
+    const { user: loggedInUser } = useContext(UserContext);
+    const { user } = useUser(loggedInUser?.uid);
     const history = useHistory();
-
-    console.log("user", user);
 
     // console.log("test");
 
@@ -27,7 +26,7 @@ export default function Header() {
                     </div>
                     <div className="text-gray-700 text-center flex items-center align-items">
                         {
-                            user ? (
+                            user.username ? (
                                 <>
                                     <Link to={ROUTES.DASHBOARD} aria-label="Dashboard">
                                         <svg
@@ -93,7 +92,7 @@ export default function Header() {
                                             className="bg-blue-medium font-bold text-sm rounded text-white w-20 h-8"
                                         >
                                             Log In
-                                  </button>
+                                        </button>
                                     </Link>
                                     <Link to={ROUTES.SIGN_UP}>
                                         <button
@@ -101,7 +100,7 @@ export default function Header() {
                                             className="font-bold text-sm rounded text-blue-medium w-20 h-8"
                                         >
                                             Sign Up
-                                  </button>
+                                        </button>
                                     </Link>
                                 </>
                             )

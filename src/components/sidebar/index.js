@@ -1,12 +1,12 @@
-import useUser from '../../hooks/use-user';
+// import useUser from '../../hooks/use-user';
 import User from './user';
 import Suggestions from './suggestions';
+import { useContext } from 'react';
+import LoggedInUserContext from '../../context/logged-in-user';
 
 export default function Index() {
 
-    const test = useUser();
-    // console.log("test", test);
-    const { user: { docId, fullName, username, userId, following } } = useUser();
+    const { user: { docId = '', fullName, username, userId, following } = {} } = useContext(LoggedInUserContext);
 
     // console.log("fullName, username, userId", fullName, username, userId);
     return (

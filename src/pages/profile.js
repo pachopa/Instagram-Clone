@@ -16,7 +16,7 @@ export default function Profile() {
         async function checkUserExists() {
             const [user] = await getUserByUsername(username);
             console.log("user232323", user);
-            if (user.userId) {
+            if (user?.userId) {
                 setUser(user);
             } else {
                 history.push(ROUTES.NOT_FOUND);
